@@ -1,0 +1,106 @@
+/* CHEMINI 0.0 - Hoja de Estilos Institucional */
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap');
+
+html, body {
+    font-family: 'Poppins', sans-serif;
+    background: linear-gradient(135deg, #001F3F 0%, #003366 100%);
+    margin: 0;
+    padding: 20px 10px;
+    color: #FFE484;
+    min-height: 100vh;
+}
+
+.chemini-container {
+    background: rgba(255, 255, 255, 0.1);
+    backdrop-filter: blur(10px);
+    border: 2px solid rgba(46, 204, 113, 0.5);
+    border-radius: 20px;
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+    max-width: 850px;
+    margin: 0 auto;
+    padding: 25px;
+}
+
+p, span, label, li, h4, h5 {
+    color: #FFE484 !important;
+    text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.8) !important;
+}
+
+.custom-title-chemita {
+    text-align: center;
+    color: #2ECC71;
+    font-size: clamp(2em, 6vw, 3.2em);
+    font-weight: 700;
+    margin-bottom: 0;
+    line-height: 1.2;
+    text-shadow: 2px 2px 4px rgba(0,0,0,0.6);
+}
+
+.custom-subtitle-chemita {
+    text-align: center;
+    color: #A3E4D7;
+    font-size: clamp(0.9em, 3vw, 1.1em);
+    margin-top: 5px;
+    margin-bottom: 25px;
+    font-weight: 400;
+    text-shadow: 1px 1px 3px rgba(0,0,0,0.6);
+}
+
+.login-box {
+    background: rgba(255, 255, 255, 0.15);
+    backdrop-filter: blur(10px);
+    border: 2px solid rgba(46, 204, 113, 0.3);
+    border-radius: 20px;
+    padding: 40px;
+    margin: 20px auto;
+    max-width: 450px;
+    box-shadow: 0 8px 20px rgba(0,0,0,0.3);
+}
+
+.login-box input, .chat-input-box input, select {
+    background: rgba(255,255,255,0.9) !important;
+    border-radius: 10px !important;
+    color: #333 !important;
+    padding: 10px;
+    width: 100%;
+    border: none;
+    margin-top: 5px;
+    margin-bottom: 15px;
+    box-sizing: border-box;
+}
+
+.chat-message {
+    background: rgba(255, 255, 255, 0.95) !important;
+    color: #333 !important;
+    border-radius: 15px;
+    padding: 15px 20px;
+    margin: 10px 0;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.2);
+    border-left: 5px solid #2ECC71;
+}
+
+.chat-message p, .chat-message span, .chat-message li {
+    color: #333 !important;
+    text-shadow: none !important;
+}
+
+button {
+    background: linear-gradient(45deg, #2ECC71, #27AE60) !important;
+    color: white !important;
+    font-weight: 600;
+    border-radius: 15px;
+    border: none;
+    padding: 12px 20px;
+    transition: all 0.3s ease;
+    box-shadow: 0 4px 10px rgba(46, 204, 113, 0.3);
+    width: 100%;
+    cursor: pointer;
+    text-shadow: none !important;
+    font-family: 'Poppins', sans-serif;
+}
+
+button:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 15px rgba(46, 204, 113, 0.5);
+    background: linear-gradient(45deg, #27AE60, #2ECC71) !important;
+}

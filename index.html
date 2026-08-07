@@ -1,0 +1,345 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Chemini | Instituto Juventud</title>
+    
+    <!-- Etiquetas obligatorias para que el icono aparezca en iOS y Android -->
+    <link rel="icon" type="image/png" href="/logo.png">
+    <link rel="apple-touch-icon" href="/logo.png">
+    
+    <link rel="stylesheet" href="/styles.css?v=8.0">
+    <link rel="manifest" href="/manifest.json?v=8.0">
+    <meta name="theme-color" content="#001F3F">
+    
+    <style>
+        body { background-color: #001F3F; color: #ffffff; font-family: 'Poppins', sans-serif; margin: 0; padding: 20px; }
+        .chemini-container { max-width: 800px; margin: 0 auto; background: rgba(255, 255, 255, 0.03); padding: 30px; border-radius: 20px; box-shadow: 0 8px 32px rgba(0, 0, 0, 0.5); border: 1px solid rgba(255, 255, 255, 0.1); }
+        .custom-title-chemita { text-align: center; color: #2ECC71; margin-bottom: 5px; }
+        .custom-subtitle-chemita { text-align: center; color: #FFE484; margin-top: 0; margin-bottom: 25px; font-style: italic; }
+        
+        .login-box { background: rgba(0, 0, 0, 0.2); padding: 25px; border-radius: 15px; border: 1px solid rgba(46, 204, 113, 0.3); }
+        .login-box label { display: block; margin-top: 10px; color: #A3E4D7; }
+        .login-box input, .login-box select { width: 100%; padding: 10px; margin-top: 5px; border-radius: 8px; border: 1px solid #ccc; box-sizing: border-box; font-family: inherit; }
+        
+        button { background-color: #2ECC71; color: #001F3F; border: none; padding: 12px 20px; border-radius: 8px; font-weight: bold; cursor: pointer; transition: background 0.3s; font-family: inherit; }
+        button:hover { background-color: #27AE60; }
+        button:disabled { background-color: #7f8c8d; cursor: not-allowed; }
+        
+        .chat-message { background: rgba(255, 255, 255, 0.08); padding: 15px; border-radius: 10px; margin-bottom: 12px; border-left: 4px solid #2ECC71; line-height: 1.5; }
+        
+        .typing-cursor::after { content: "▋"; animation: blink 1s infinite; }
+        @keyframes blink { 0%, 100% { opacity: 1; } 50% { opacity: 0; } }
+        
+        .logo-portada { display: block; margin: 0 auto 15px auto; max-width: 140px; border-radius: 15px; border: 2px solid #2ECC71; }
+        .status-box { background: rgba(46, 204, 113, 0.15); border: 1px solid #2ECC71; padding: 15px; border-radius: 12px; margin-bottom: 15px; color: #FFE484; text-align: center; font-style: italic; animation: fadeIn 0.5s ease-in-out; }
+        .reloj-arena-box { background: rgba(0, 31, 63, 0.9); border: 2px solid #2ECC71; padding: 20px; border-radius: 15px; text-align: center; margin: 15px 0; }
+        .reloj-icono { font-size: 2.5em; animation: girarReloj 2s infinite linear; display: inline-block; margin-bottom: 10px; }
+        
+        @keyframes girarReloj { 0% { transform: rotate(0deg); } 50% { transform: rotate(180deg); } 100% { transform: rotate(360deg); } }
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(-5px); } to { opacity: 1; transform: translateY(0); } }
+        
+        @media (max-width: 768px) { body { padding: 10px; } .chemini-container { padding: 15px; } .login-box { padding: 20px; } .logo-portada { max-width: 100px; } }
+    </style>
+</head>
+<body>
+    <div class="chemini-container">
+        <img src="/logo.png" alt="Logo Chemini" class="logo-portada" onerror="this.style.display='none'">
+        <h1 class="custom-title-chemita">Chemini</h1>
+        <p class="custom-subtitle-chemita">✨ Tu IA educativa de confianza ✨</p>
+        
+        <div class="login-box" id="login-section">
+            <h3 style="margin-top: 0; color: #fff;">🔒 Acceso al Sistema</h3>
+            <label>Clave de Usuario:</label>
+            <input type="text" id="input-clave" placeholder="Ej. JOSEFINO1">
+            <label>Contraseña:</label>
+            <input type="password" id="input-password" placeholder="••••••••">
+            <label>Grado Escolar:</label>
+            <select id="select-grado">
+                <option value="" disabled selected>Selecciona tu grado escolar</option>
+                <option value="1o de Secundaria">1o de Secundaria</option>
+                <option value="2o de Secundaria">2o de Secundaria</option>
+                <option value="3o de Secundaria">3o de Secundaria</option>
+                <option value="4o de Preparatoria">4o de Preparatoria</option>
+                <option value="5o de Preparatoria">5o de Preparatoria</option>
+                <option value="6o de Preparatoria">6o de Preparatoria</option>
+            </select>
+            <button onclick="entrarAlSistema()" style="margin-top: 20px; width: 100%;">Entrar a TutorIAs</button>
+        </div>
+
+        <div id="chat-section" style="display: none;">
+            <div style="background: rgba(0,0,0,0.2); padding: 15px; border-radius: 15px; margin-bottom: 20px; border: 1px solid rgba(255,255,255,0.1);">
+                <h4 style="margin-top: 0; color: #A3E4D7;">⚙️ Panel de Control Multiagente</h4>
+                
+                <label style="color: #fff; font-size: 0.9em;">Agentes (Participarán en el orden que los selecciones):</label>
+                <div id="agentes-checkboxes" style="display: flex; flex-wrap: wrap; gap: 12px; margin-top: 10px; font-size: 0.9em;">
+                    <label><input type="checkbox" value="Sócrates" checked> 🏛️ Sócrates</label>
+                    <label><input type="checkbox" value="Sombrero Blanco"> 🤍 Blanco</label>
+                    <label><input type="checkbox" value="Sombrero Rojo"> ❤️ Rojo</label>
+                    <label><input type="checkbox" value="Sombrero Negro"> 🖤 Negro</label>
+                    <label><input type="checkbox" value="Sombrero Amarillo"> 💛 Amarillo</label>
+                    <label><input type="checkbox" value="Sombrero Verde" checked> 💚 Verde</label>
+                    <label><input type="checkbox" value="Sombrero Azul"> 💙 Azul</label>
+                    <label><input type="checkbox" value="IA PNL"> 🧠 IA PNL</label>
+                    <label><input type="checkbox" value="Pensamiento Lateral"> ⚡ Lateral</label>
+                    <label><input type="checkbox" value="IA Psicólogo"> 🫂 Psicólogo</label>
+                    <label><input type="checkbox" value="Profe Adrián" checked> 🧑‍🏫 Profe Adrián</label>
+                </div>
+
+                <div style="display: flex; gap: 15px; margin-top: 15px;">
+                    <div style="flex: 1;">
+                        <label style="color: #fff; font-size: 0.9em;">Rondas de Debate:</label>
+                        <select id="select-ciclos" style="width: 100%; padding: 8px; border-radius: 5px; margin-top: 5px;">
+                            <option value="1">1 Ciclo</option>
+                            <option value="2" selected>2 Ciclos</option>
+                            <option value="3">3 Ciclos</option>
+                        </select>
+                    </div>
+                    <div style="flex: 1;">
+                        <label style="color: #fff; font-size: 0.9em;">Profundidad:</label>
+                        <select id="select-longitud" style="width: 100%; padding: 8px; border-radius: 5px; margin-top: 5px;">
+                            <option value="Respuesta corta" selected>Respuesta corta</option>
+                            <option value="Razonamiento">Razonamiento</option>
+                            <option value="Razonamiento profundo">Razonamiento profundo</option>
+                        </select>
+                    </div>
+                </div>
+            </div>
+
+            <div id="historial-chat" style="max-height: 450px; overflow-y: auto; margin-bottom: 20px; padding-right: 5px;"></div>
+            <div id="status-container"></div>
+
+            <div class="chat-input-box">
+                <textarea id="input-prompt" placeholder="Escribe tu consulta socrática aquí..." rows="3" style="width:100%; border-radius:10px; padding:15px; background:rgba(255,255,255,0.95); color:#001F3F; font-family:'Poppins', sans-serif; box-sizing: border-box;"></textarea>
+                
+                <div style="display: flex; gap: 10px; margin-top: 10px;">
+                    <button id="btn-enviar" onclick="enviarPrompt()" style="flex: 2;">🚀 Enviar al Orquestador</button>
+                    <button id="btn-detener" onclick="detenerProceso()" style="flex: 1; display: none; background-color: #E74C3C; color: white;">🛑 Detener</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="download-container-bottom" style="text-align: center; margin-top: 30px;">
+        <button id="install-btn" style="display: none; width: auto; background-color: #FFE484; color: #001F3F; margin: 0 auto; font-family: inherit;">
+            📥 Instalar Aplicación (PWA)
+        </button>
+    </div>
+
+    <script>
+        if ('serviceWorker' in navigator) {
+            window.addEventListener('load', () => {
+                navigator.serviceWorker.register('/sw.js?v=8.0').catch(err => console.log('Error SW:', err));
+            });
+        }
+
+        let deferredPrompt;
+        const installBtn = document.getElementById('install-btn');
+        window.addEventListener('beforeinstallprompt', (e) => {
+            e.preventDefault();
+            deferredPrompt = e;
+            installBtn.style.display = 'inline-block';
+        });
+
+        installBtn.addEventListener('click', async () => {
+            if (deferredPrompt) {
+                deferredPrompt.prompt();
+                const { outcome } = await deferredPrompt.userChoice;
+                deferredPrompt = null;
+                installBtn.style.display = 'none';
+            }
+        });
+
+        let alumnoClave = "";
+        let gradoActual = "";
+        let intervaloFrases = null;
+        let ordenSeleccionAgentes = ["Sócrates", "Sombrero Verde", "Profe Adrián"]; 
+        let abortController = null;
+        let isProcesoDetenido = false;
+
+        const frasesInstitucionales = [
+            "🌿 La paciencia es una gran virtud.",
+            "💡 Aprovecha este tiempo para pensar en tu trabajo.",
+            "🌟 ¡Adelante, siempre adelante, pues lo quiere San José!",
+            "⚙️ Recuerda estar siempre útilmente ocupado."
+        ];
+
+        document.querySelectorAll('#agentes-checkboxes input[type="checkbox"]').forEach(cb => {
+            cb.addEventListener('change', (e) => {
+                const ag = e.target.value;
+                if (e.target.checked) {
+                    if (!ordenSeleccionAgentes.includes(ag)) ordenSeleccionAgentes.push(ag);
+                } else {
+                    ordenSeleccionAgentes = ordenSeleccionAgentes.filter(a => a !== ag);
+                }
+            });
+        });
+
+        async function entrarAlSistema() {
+            const clave = document.getElementById("input-clave").value.trim();
+            const pass = document.getElementById("input-password").value.trim();
+            gradoActual = document.getElementById("select-grado").value;
+
+            if(!clave || !pass || !gradoActual) return alert("Completa todos los campos.");
+
+            try {
+                const res = await fetch("/login", {
+                    method: "POST", headers: { "Content-Type": "application/json" },
+                    body: JSON.stringify({ username: clave, password: pass, grade: gradoActual }) 
+                });
+                const data = await res.json();
+                if(res.ok) {
+                    alumnoClave = clave;
+                    document.getElementById("login-section").style.display = "none";
+                    document.getElementById("chat-section").style.display = "block";
+                } else { alert(data.detail || "Credenciales incorrectas."); }
+            } catch (err) { alert("Error al conectar con el servidor."); }
+        }
+
+        function iniciarFrasesAleatorias() {
+            const statusDiv = document.getElementById("status-container");
+            function mostrar() {
+                const f = frasesInstitucionales[Math.floor(Math.random() * frasesInstitucionales.length)];
+                statusDiv.innerHTML = `<div class="status-box">${f}</div>`;
+            }
+            mostrar();
+            intervaloFrases = setInterval(mostrar, 4000);
+        }
+
+        function detenerFrasesAleatorias() {
+            if (intervaloFrases) clearInterval(intervaloFrases);
+            document.getElementById("status-container").innerHTML = "";
+        }
+
+        function escribirLetraPorLetra(elementoId, texto) {
+            return new Promise((resolve) => {
+                const elemento = document.getElementById(elementoId);
+                let i = 0;
+                elemento.classList.add("typing-cursor");
+                
+                function escribir() {
+                    if (isProcesoDetenido) {
+                        elemento.classList.remove("typing-cursor");
+                        resolve();
+                        return;
+                    }
+
+                    if (i < texto.length) {
+                        elemento.innerHTML += texto.charAt(i) === '\n' ? '<br>' : texto.charAt(i);
+                        i++;
+                        const velocidadHumana = Math.floor(Math.random() * (70 - 30 + 1)) + 30;
+                        setTimeout(escribir, velocidadHumana);
+                    } else {
+                        elemento.classList.remove("typing-cursor");
+                        resolve();
+                    }
+                }
+                escribir();
+            });
+        }
+
+        function detenerProceso() {
+            isProcesoDetenido = true;
+            if (abortController) abortController.abort();
+            
+            document.getElementById("btn-detener").style.display = "none";
+            document.getElementById("btn-enviar").disabled = false;
+            document.getElementById("btn-enviar").style.opacity = "1";
+            
+            detenerFrasesAleatorias();
+            
+            const historial = document.getElementById("historial-chat");
+            historial.innerHTML += `<div class="chat-message" style="border-left-color: #E74C3C; color: #E74C3C;"><b>🛑 Generación detenida a petición del estudiante.</b></div>`;
+            historial.scrollTop = historial.scrollHeight;
+        }
+
+        async function enviarPrompt() {
+            const promptTexto = document.getElementById("input-prompt").value.trim();
+            if(!promptTexto) return;
+            if(ordenSeleccionAgentes.length === 0) return alert("Selecciona un agente.");
+
+            isProcesoDetenido = false;
+            abortController = new AbortController();
+
+            const ciclos = parseInt(document.getElementById("select-ciclos").value);
+            const longitudReq = document.getElementById("select-longitud").value;
+            const historialDiv = document.getElementById("historial-chat");
+            const btnEnviar = document.getElementById("btn-enviar");
+            const btnDetener = document.getElementById("btn-detener");
+
+            btnEnviar.disabled = true;
+            btnEnviar.style.opacity = "0.5";
+            btnDetener.style.display = "block"; 
+
+            historialDiv.innerHTML += `<div class="chat-message" style="border-left-color: #FFE484;"><b>${alumnoClave}:</b> ${promptTexto}</div>`;
+            document.getElementById("input-prompt").value = "";
+            historialDiv.scrollTop = historialDiv.scrollHeight;
+
+            iniciarFrasesAleatorias();
+
+            try {
+                const response = await fetch("/debate", {
+                    method: "POST",
+                    headers: { "Content-Type": "application/json" },
+                    signal: abortController.signal, 
+                    body: JSON.stringify({
+                        estudiante: alumnoClave, grado: gradoActual,
+                        agentes_seleccionados: ordenSeleccionAgentes,
+                        prompt: promptTexto, ciclos_bucle: ciclos,
+                        longitud: longitudReq
+                    })
+                });
+
+                const data = await response.json();
+                detenerFrasesAleatorias();
+
+                if (!response.ok) {
+                    if (!isProcesoDetenido) alert(data.detail || "Aviso del Orquestador: Error de servidor.");
+                    throw new Error("Server Error");
+                }
+
+                if(data.analisis_individuales) {
+                    for (const agente of ordenSeleccionAgentes) {
+                        if (isProcesoDetenido) break; 
+                        
+                        if (data.analisis_individuales[agente]) {
+                            const respuesta = data.analisis_individuales[agente];
+                            const idUnico = 'msg-' + Math.random().toString(36).substr(2, 9);
+                            historialDiv.innerHTML += `<div class="chat-message"><b>${agente}:</b><br><div id="${idUnico}"></div></div>`;
+                            historialDiv.scrollTop = historialDiv.scrollHeight;
+                            
+                            await escribirLetraPorLetra(idUnico, respuesta);
+                            if (!isProcesoDetenido) await new Promise(r => setTimeout(r, 800));
+                        }
+                    }
+                }
+
+                if(data.conclusion_final && !isProcesoDetenido) {
+                    const idSintesis = 'sintesis-' + Math.random().toString(36).substr(2, 9);
+                    historialDiv.innerHTML += `
+                        <div class="chat-message" style="border-left-color: #A3E4D7; background: rgba(0,31,63,0.85) !important;">
+                            <h4 style="color: #2ECC71; margin-top:0;">🤖 Síntesis y Andamiaje Socrático</h4>
+                            <div id="${idSintesis}" style="color: #FFE484 !important;"></div>
+                        </div>`;
+                    historialDiv.scrollTop = historialDiv.scrollHeight;
+                    await escribirLetraPorLetra(idSintesis, data.conclusion_final);
+                }
+
+            } catch (error) {
+                if (error.name === 'AbortError') {
+                    console.log("Fetch abortado por el usuario.");
+                } else {
+                    detenerFrasesAleatorias();
+                    if(!isProcesoDetenido) alert("Error de red o conexión.");
+                }
+            } finally {
+                btnDetener.style.display = "none";
+                btnEnviar.disabled = false;
+                btnEnviar.style.opacity = "1";
+                historialDiv.scrollTop = historialDiv.scrollHeight;
+            }
+        }
+    </script>
+</body>
+</html>
